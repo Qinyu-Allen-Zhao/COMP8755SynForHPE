@@ -168,9 +168,10 @@ plt.figure(figsize=(10, 5))
 plt.title("Generator and Discriminator Loss During Training")
 plt.plot(G_losses, label="G")
 plt.plot(D_losses, label="D")
-plt.xlabel("iterations")
+plt.xlabel("Iterations")
 plt.ylabel("Loss")
 plt.legend()
+plt.savefig("results/iteration_loss.jpg", dpi=300)
 plt.show()
 
 # Grab a batch of real images from the dataloader
@@ -182,12 +183,15 @@ plt.subplot(1, 2, 1)
 plt.axis("off")
 plt.title("Real Images")
 plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
+plt.savefig("results/real_images.jpg", dpi=300)
+plt.show()
 
 # Plot the fake images from the last epoch
 plt.subplot(1, 2, 2)
 plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
+plt.savefig("results/fake_images.jpg", dpi=300)
 plt.show()
 
 # fig = plt.figure(figsize=(8,8))
