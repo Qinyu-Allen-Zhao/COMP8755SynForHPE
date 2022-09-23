@@ -3,12 +3,12 @@ import torch.nn as nn
 
 # Generator Code
 class Generator(nn.Module):
-    def __init__(self, ngpu, nz, nc, ngf):
+    def __init__(self, ngpu, nc, ngf):
         super(Generator, self).__init__()
         self.ngpu = ngpu
         self.main = nn.Sequential(
             # input is Z, going into a convolution
-            nn.Conv2d(nz, ngf * 8, 3, 1, 1, bias=False),
+            nn.Conv2d(nc, ngf * 8, 3, 1, 1, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
             # state size. (ngf*8) x 64 x 64

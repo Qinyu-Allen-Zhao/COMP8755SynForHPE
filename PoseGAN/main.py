@@ -46,7 +46,7 @@ plt.title("Training Images")
 plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1, 2, 0)))
 
 # Create the generator
-netG = Generator(cfg.ngpu, cfg.nz, cfg.nc, cfg.ngf).to(device)
+netG = Generator(cfg.ngpu, cfg.nc, cfg.ngf).to(device)
 # Create the Discriminator
 netD = Discriminator(cfg.ngpu, cfg.nc, cfg.ndf).to(device)
 
