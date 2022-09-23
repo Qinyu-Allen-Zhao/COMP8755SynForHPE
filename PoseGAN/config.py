@@ -3,7 +3,8 @@ from yacs.config import CfgNode as CN
 _C = CN()
 
 # Root directory for dataset
-_C.dataroot = "/content/data/"
+_C.data_root = "/content/syn_images/"
+_C.real_root = "/content/real_images/"
 # Number of workers for dataloader
 _C.workers = 2
 # Batch size during training

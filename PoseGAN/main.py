@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 import os
 import random
 
@@ -11,10 +12,10 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
+from config import _C as cfg
 from discriminator import Discriminator
 from generator import Generator
 from utils import weights_init
-from config import _C as cfg
 
 # Set random seed for reproducibility
 manualSeed = 2022
@@ -24,26 +25,36 @@ torch.manual_seed(manualSeed)
 
 # We can use an image folder dataset the way we have it setup.
 # Create the dataset
-dataset = dset.ImageFolder(root=cfg.dataroot,
-                           transform=transforms.Compose([
-                               transforms.Resize(cfg.image_size),
-                               transforms.CenterCrop(cfg.image_size),
-                               transforms.ToTensor(),
-                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                           ]))
+syn_dataset = dset.ImageFolder(root=cfg.data_root,
+                               transform=transforms.Compose([
+                                   transforms.Resize(cfg.image_size),
+                                   transforms.CenterCrop(cfg.image_size),
+                                   transforms.ToTensor(),
+                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                               ]))
+real_dataset = dset.ImageFolder(root=cfg.real_root,
+                                transform=transforms.Compose([
+                                    transforms.Resize(cfg.image_size),
+                                    transforms.CenterCrop(cfg.image_size),
+                                    transforms.ToTensor(),
+                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                                ]))
+
 # Create the dataloader
-dataloader = torch.utils.data.DataLoader(dataset, batch_size=cfg.batch_size,
-                                         shuffle=True, num_workers=cfg.workers)
+syn_dataloader = torch.utils.data.DataLoader(syn_dataset, batch_size=cfg.batch_size,
+                                             shuffle=True, num_workers=cfg.workers)
+real_dataloader = torch.utils.data.DataLoader(syn_dataset, batch_size=cfg.batch_size,
+                                              shuffle=True, num_workers=cfg.workers)
 
 # Decide which device we want to run on
 device = torch.device("cuda:0" if (torch.cuda.is_available() and cfg.ngpu > 0) else "cpu")
 
 # Plot some training images
-real_batch = next(iter(dataloader))
+syn_batch = next(iter(syn_dataloader))
 plt.figure(figsize=(8, 8))
 plt.axis("off")
 plt.title("Training Images")
-plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1, 2, 0)))
+plt.imshow(np.transpose(vutils.make_grid(syn_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1, 2, 0)))
 
 # Create the generator
 netG = Generator(cfg.ngpu, cfg.nc, cfg.ngf).to(device)
@@ -69,9 +80,10 @@ criterion = nn.BCELoss()
 
 # Create batch of latent vectors that we will use to visualize
 # Grab a batch of real images from the dataloader
-real_batch = next(iter(dataloader))
+syn_batch = next(iter(syn_dataloader))
+real_batch = next(iter(real_dataloader))
 #  the progression of the generator
-fixed_images = real_batch[0]
+fixed_images = syn_batch[0]
 
 # Establish convention for real and fake labels during training
 real_label = 1.
@@ -93,7 +105,7 @@ print("Starting Training Loop...")
 # For each epoch
 for epoch in range(cfg.num_epochs):
     # For each batch in the dataloader
-    for i, data in enumerate(dataloader, 0):
+    for i, data in enumerate(syn_dataloader, 0):
 
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
@@ -101,7 +113,7 @@ for epoch in range(cfg.num_epochs):
         # Train with all-real batch
         netD.zero_grad()
         # Format batch
-        real_images = data[0].to(device)
+        real_images = real_batch[i % len(real_batch)].to(device)
         b_size = real_images.size(0)
         label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
         # Forward pass real batch through D
@@ -114,7 +126,8 @@ for epoch in range(cfg.num_epochs):
 
         # Train with all-fake batch
         # Generate fake image batch with G
-        fake = netG(real_images)
+        syn_images = data[0].to(device)
+        fake = netG(syn_images)
         label.fill_(fake_label)
         # Classify all fake batch with D
         output = netD(fake.detach()).view(-1)
@@ -146,7 +159,7 @@ for epoch in range(cfg.num_epochs):
         # Output training stats
         if i % 50 == 0:
             print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                  % (epoch, cfg.num_epochs, i, len(dataloader),
+                  % (epoch, cfg.num_epochs, i, len(syn_dataloader),
                      errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
 
         # Save Losses for plotting later
@@ -176,7 +189,7 @@ plt.figure(figsize=(15, 15))
 plt.subplot(1, 2, 1)
 plt.axis("off")
 plt.title("Real Images")
-plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
+plt.imshow(np.transpose(vutils.make_grid(syn_batch[0].to(device)[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
 plt.savefig("results/real_images.jpg", dpi=300)
 plt.show()
 
