@@ -83,7 +83,7 @@ criterion = nn.BCELoss()
 syn_batch = next(iter(syn_dataloader))
 real_batch = next(iter(real_dataloader))
 #  the progression of the generator
-fixed_images = syn_batch[0]
+fixed_images = syn_batch[0].to(device)
 
 # Establish convention for real and fake labels during training
 real_label = 1.
