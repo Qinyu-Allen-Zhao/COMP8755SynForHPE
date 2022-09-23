@@ -11,9 +11,9 @@ import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
-from PoseGAN.discriminator import Discriminator
-from PoseGAN.generator import Generator
-from PoseGAN.utils import weights_init
+from discriminator import Discriminator
+from generator import Generator
+from utils import weights_init
 from config import _C as cfg
 
 # Set random seed for reproducibility
@@ -189,3 +189,10 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
 plt.show()
+
+# fig = plt.figure(figsize=(8,8))
+# plt.axis("off")
+# ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
+# ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
+#
+# HTML(ani.to_jshtml())
