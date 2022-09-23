@@ -68,8 +68,10 @@ print(netD)
 criterion = nn.BCELoss()
 
 # Create batch of latent vectors that we will use to visualize
+# Grab a batch of real images from the dataloader
+real_batch = next(iter(dataloader))
 #  the progression of the generator
-fixed_noise = torch.randn(64, cfg.nz, 1, 1, device=device)
+fixed_images = real_batch[0]
 
 # Establish convention for real and fake labels during training
 real_label = 1.
@@ -99,11 +101,11 @@ for epoch in range(cfg.num_epochs):
         # Train with all-real batch
         netD.zero_grad()
         # Format batch
-        real_cpu = data[0].to(device)
-        b_size = real_cpu.size(0)
+        real_images = data[0].to(device)
+        b_size = real_images.size(0)
         label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
         # Forward pass real batch through D
-        output = netD(real_cpu).view(-1)
+        output = netD(real_images).view(-1)
         # Calculate loss on all-real batch
         errD_real = criterion(output, label)
         # Calculate gradients for D in backward pass
@@ -111,10 +113,8 @@ for epoch in range(cfg.num_epochs):
         D_x = output.mean().item()
 
         # Train with all-fake batch
-        # Generate batch of latent vectors
-        noise = torch.randn(b_size, cfg.nz, 1, 1, device=device)
         # Generate fake image batch with G
-        fake = netG(noise)
+        fake = netG(real_images)
         label.fill_(fake_label)
         # Classify all fake batch with D
         output = netD(fake.detach()).view(-1)
@@ -153,13 +153,10 @@ for epoch in range(cfg.num_epochs):
         G_losses.append(errG.item())
         D_losses.append(errD.item())
 
-        # Check how the generator is doing by saving G's output on fixed_noise
-        if (iters % 500 == 0) or ((epoch == cfg.num_epochs - 1) and (i == len(dataloader) - 1)):
-            with torch.no_grad():
-                fake = netG(fixed_noise).detach().cpu()
-            img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
-
-        iters += 1
+    # Check how the generator is doing by saving G's output
+    with torch.no_grad():
+        fake = netG(fixed_images).detach().cpu()
+    img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
     torch.save(netD.state_dict(), os.path.join(cfg.save_path, "%d_discriminator.pt" % epoch))
     torch.save(netG.state_dict(), os.path.join(cfg.save_path, "%d_generator.pt" % epoch))
@@ -173,9 +170,6 @@ plt.ylabel("Loss")
 plt.legend()
 plt.savefig("results/iteration_loss.jpg", dpi=300)
 plt.show()
-
-# Grab a batch of real images from the dataloader
-real_batch = next(iter(dataloader))
 
 # Plot the real images
 plt.figure(figsize=(15, 15))
