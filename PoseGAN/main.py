@@ -104,7 +104,7 @@ print("Starting Training Loop...")
 # For each epoch
 for epoch in range(cfg.num_epochs):
     # For each batch in the dataloader
-    for i, syn_data, real_data in enumerate(zip(syn_dataloader, real_dataloader)):
+    for i, data in enumerate(zip(syn_dataloader, real_dataloader)):
 
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
@@ -112,7 +112,7 @@ for epoch in range(cfg.num_epochs):
         # Train with all-real batch
         netD.zero_grad()
         # Format batch
-        real_images = real_data[0].to(device)
+        real_images = data[1][0].to(device)
         b_size = real_images.size(0)
         label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
         # Forward pass real batch through D
@@ -125,7 +125,7 @@ for epoch in range(cfg.num_epochs):
 
         # Train with all-fake batch
         # Generate fake image batch with G
-        syn_images = syn_data[0].to(device)
+        syn_images = data[0][0].to(device)
         fake = netG(syn_images)
         label.fill_(fake_label)
         # Classify all fake batch with D
