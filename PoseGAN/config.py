@@ -8,7 +8,7 @@ _C.real_root = "/content/real_images/mpii/"
 # Number of workers for dataloader
 _C.workers = 2
 # Batch size during training
-_C.batch_size = 128
+_C.batch_size = 64
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
 _C.image_size = 64
