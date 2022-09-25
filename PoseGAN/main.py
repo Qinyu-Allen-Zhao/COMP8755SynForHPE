@@ -81,8 +81,10 @@ criterion = nn.BCELoss()
 # Create batch of latent vectors that we will use to visualize
 # Grab a batch of real images from the dataloader
 syn_batch = next(iter(syn_dataloader))
+real_batch = next(iter(real_dataloader))
 #  the progression of the generator
-fixed_images = syn_batch[0].to(device)
+fixed_syn_images = syn_batch[0].to(device)
+fixed_real_images = real_batch[0].to(device)
 
 # Establish convention for real and fake labels during training
 real_label = 1.
@@ -167,7 +169,8 @@ for epoch in range(cfg.num_epochs):
 
     # Check how the generator is doing by saving G's output
     with torch.no_grad():
-        fake = netG(fixed_images).detach().cpu()
+        fake = netG(fixed_syn_images).detach().cpu()
+    # print(fixed_syn_images.shape)
     img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
     torch.save(netD.state_dict(), os.path.join(cfg.save_path, "%d_discriminator.pt" % epoch))
@@ -188,16 +191,14 @@ plt.figure(figsize=(15, 15))
 plt.subplot(1, 2, 1)
 plt.axis("off")
 plt.title("Real Images")
-plt.imshow(np.transpose(vutils.make_grid(syn_batch[0].to(device)[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
-plt.savefig("results/real_images.jpg", dpi=300)
-plt.show()
+plt.imshow(np.transpose(vutils.make_grid(fixed_real_images[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
 
 # Plot the fake images from the last epoch
 plt.subplot(1, 2, 2)
 plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
-plt.savefig("results/fake_images.jpg", dpi=300)
+plt.savefig("results/compare_images.jpg", dpi=300)
 plt.show()
 
 # fig = plt.figure(figsize=(8,8))
