@@ -115,8 +115,7 @@ for epoch in range(cfg.num_epochs):
         netD.zero_grad()
         # Format batch
         real_images = data[1][0].to(device)
-        b_size = real_images.size(0)
-        label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
+        label = torch.full((real_images.size(0),), real_label, dtype=torch.float, device=device)
         # Forward pass real batch through D
         output = netD(real_images).view(-1)
         # Calculate loss on all-real batch
@@ -129,7 +128,7 @@ for epoch in range(cfg.num_epochs):
         # Generate fake image batch with G
         syn_images = data[0][0].to(device)
         fake = netG(syn_images)
-        label.fill_(fake_label)
+        label = torch.full((syn_images.size(0),), fake_label, dtype=torch.float, device=device)
         # Classify all fake batch with D
         output = netD(fake.detach()).view(-1)
         # Calculate D's loss on the all-fake batch
