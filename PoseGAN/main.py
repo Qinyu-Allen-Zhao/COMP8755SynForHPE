@@ -43,7 +43,7 @@ real_dataset = dset.ImageFolder(root=cfg.real_root,
 # Create the dataloader
 syn_dataloader = torch.utils.data.DataLoader(syn_dataset, batch_size=cfg.batch_size,
                                              shuffle=True, num_workers=cfg.workers)
-real_dataloader = torch.utils.data.DataLoader(syn_dataset, batch_size=cfg.batch_size,
+real_dataloader = torch.utils.data.DataLoader(real_dataset, batch_size=cfg.batch_size,
                                               shuffle=True, num_workers=cfg.workers)
 
 # Decide which device we want to run on
