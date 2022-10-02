@@ -44,6 +44,8 @@ train_loader = torch.utils.data.DataLoader(train_set,
 # Model, loss, optimizer, and writer for Tensorboard
 gpu_available = torch.cuda.is_available()
 model = get_pose_net(cfg, is_train=True)
+print(model)
+
 loss_func = nn.MSELoss()
 if gpu_available:
     model.cuda()
