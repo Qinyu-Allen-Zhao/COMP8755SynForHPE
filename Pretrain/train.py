@@ -14,7 +14,7 @@ from pose_resnet import get_pose_net
 
 # Hyper-parameters
 batch_size = 64
-num_epochs = 140
+num_epochs = 100
 
 # Dataset
 img_path = '/content/drive/MyDrive/datasets/synthesis_dataset/'
@@ -62,9 +62,9 @@ end = time.time()
 best_model_epoch = 0
 best_loss = float('inf')
 
-for epoch in tqdm(range(num_epochs)):
+for epoch in tqdm(range(num_epochs), ascii=True, desc="Epochs"):
     model.train()
-    for i, data in enumerate(train_loader):
+    for i, data in tqdm(enumerate(train_loader), ascii=True, desc="Iterations"):
         images, labels = data
         if gpu_available:
             images = images.cuda()
@@ -82,12 +82,3 @@ for epoch in tqdm(range(num_epochs)):
     PATH = './checkpoints/pretrain_{:02d}.pth'.format(epoch)
     torch.save(model.state_dict(), PATH)
 
-    train_acc, train_loss = eva_acc_and_loss(train_loader, model, gpu_available)
-    writer.add_scalar("Accuracy/train", train_acc, epoch)
-    writer.add_scalar("Loss/train", train_loss, epoch)
-
-    # Print the model performance
-    curr = time.time()
-    print('Epoch: {}, Time: {}'.format(epoch, round(curr - end, 3)))
-    print('---- train accuracy: {:.4}%, train loss: {:.4}'.format(train_acc, train_loss))
-    end = curr
