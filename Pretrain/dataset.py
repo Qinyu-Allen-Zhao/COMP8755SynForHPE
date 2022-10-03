@@ -31,7 +31,7 @@ class ImageDataset(Dataset):
         # Read the specific image and its label
         image_path = self.images[index]
         image = cv2.imread(image_path)
-        label = self.labels[index]
+        label = self.labels[index].astype(np.float32)
         # Apply transform if needed
         if self.transform:
             image = self.transform(image)
