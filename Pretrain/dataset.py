@@ -1,5 +1,6 @@
 import os
 import joblib
+import cv2
 import numpy as np
 from torch.utils.data import Dataset
 
@@ -28,7 +29,8 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         # Read the specific image and its label
-        image = self.images[index]
+        image_path = self.images[index]
+        image = cv2.imread(image_path)
         label = self.labels[index]
         # Apply transform if needed
         if self.transform:
