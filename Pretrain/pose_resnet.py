@@ -113,14 +113,12 @@ class PoseResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
 
         # used for deconv layers
-        self.deconv_layers = self._make_deconv_layer(
-            extra.NUM_DECONV_LAYERS,
-            extra.NUM_DECONV_FILTERS,
-            extra.NUM_DECONV_KERNELS,
+        self.conv_layers = nn.Conv2d(
+            2048, 4096, 8
         )
 
         self.final_layer = nn.Linear(
-            cfg.MODEL.NUM_JOINTS, cfg.MODEL.NUM_JOINTS, True
+            4096, cfg.MODEL.NUM_JOINTS, True
         )
 
     def _make_layer(self, block, planes, blocks, stride=1):
@@ -191,7 +189,8 @@ class PoseResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        x = self.deconv_layers(x)
+        x = self.conv_layers(x)
+        x = x.view(x.size(0), -1)  # Flatten the image
         x = self.final_layer(x)
 
         return x
