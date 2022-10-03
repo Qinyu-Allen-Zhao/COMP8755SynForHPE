@@ -62,7 +62,7 @@ end = time.time()
 best_model_epoch = 0
 best_loss = float('inf')
 
-for epoch in tqdm(num_epochs):
+for epoch in tqdm(range(num_epochs)):
     model.train()
     for i, data in enumerate(train_loader):
         images, labels = data
