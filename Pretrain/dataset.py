@@ -13,7 +13,7 @@ class ImageDataset(Dataset):
             for img_id in range(500):
                 image_file = os.path.join(img_path, "sub{}_{:0>8}.png".format(sub_id, img_id))
                 self.images.append(image_file)
-            smpls = joblib.load('sub%d.pkl' % sub_id)['smpls']
+            smpls = joblib.load(os.path.join(ann_path, 'sub%d.pkl' % sub_id))['smpls']
             self.labels.append(smpls)
         self.labels = np.concatenate(self.labels, axis=0)
         print("Read images: ", len(self.images))
