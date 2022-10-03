@@ -119,12 +119,8 @@ class PoseResNet(nn.Module):
             extra.NUM_DECONV_KERNELS,
         )
 
-        self.final_layer = nn.Conv2d(
-            in_channels=extra.NUM_DECONV_FILTERS[-1],
-            out_channels=cfg.MODEL.NUM_JOINTS,
-            kernel_size=extra.FINAL_CONV_KERNEL,
-            stride=1,
-            padding=1 if extra.FINAL_CONV_KERNEL == 3 else 0
+        self.final_layer = nn.Linear(
+            cfg.MODEL.NUM_JOINTS, cfg.MODEL.NUM_JOINTS, True
         )
 
     def _make_layer(self, block, planes, blocks, stride=1):
