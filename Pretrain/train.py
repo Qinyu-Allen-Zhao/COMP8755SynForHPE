@@ -3,12 +3,11 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.utils.data
 from torch import optim
-from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
+import glob
 
 from config import cfg
 from dataset import ImageDataset
-from evaluation import eva_acc_and_loss
 from pose_resnet import get_pose_net
 
 
@@ -54,15 +53,18 @@ if gpu_available:
 optimizer = optim.Adam(model.parameters(),
                        lr=1e-3,
                        betas=(0.9, 0.999))
-writer = SummaryWriter()
 
 print("Start training ...")
 print("GPU avaiable: {}".format(gpu_available))
 end = time.time()
-best_model_epoch = 0
-best_loss = float('inf')
 
-for epoch in tqdm(range(num_epochs), ascii=True, desc="Epochs"):
+checkpoints = glob.glob("./checkpoints/*.pth")
+cp_id = max([int(cp[cp.find('_') + 1: -3]) for cp in checkpoints])
+start = cp_id + 1
+print('Load model pretrain_{:02d}.pth' % cp_id)
+model.load_state_dict('./checkpoints/pretrain_{:02d}.pth' % cp_id)
+
+for epoch in tqdm(range(start, num_epochs), ascii=True, desc="Epochs"):
     model.train()
     for i, data in tqdm(enumerate(train_loader), ascii=True, desc="Iterations"):
         images, labels = data
