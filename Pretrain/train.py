@@ -62,7 +62,7 @@ checkpoints = glob.glob("./checkpoints/*.pth")
 cp_id = max([int(cp[cp.find('_') + 1: -4]) for cp in checkpoints])
 start = cp_id + 1
 print('Load model pretrain_{:02d}.pth'.format(cp_id))
-model.load_state_dict('./checkpoints/pretrain_{:02d}.pth'.format(cp_id))
+model.load_state_dict(torch.load('./checkpoints/pretrain_{:02d}.pth'.format(cp_id)))
 
 for epoch in tqdm(range(start, num_epochs), ascii=True, desc="Epochs"):
     model.train()
