@@ -59,7 +59,7 @@ print("GPU avaiable: {}".format(gpu_available))
 end = time.time()
 
 checkpoints = glob.glob("./checkpoints/*.pth")
-cp_id = max([int(cp[cp.find('_') + 1: -3]) for cp in checkpoints])
+cp_id = max([int(cp[cp.find('_') + 1: -4]) for cp in checkpoints])
 start = cp_id + 1
 print('Load model pretrain_{:02d}.pth' % cp_id)
 model.load_state_dict('./checkpoints/pretrain_{:02d}.pth' % cp_id)
