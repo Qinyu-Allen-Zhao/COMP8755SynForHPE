@@ -1,0 +1,9 @@
+[submodule "iPERCore"]
+	path = iPERCore
+	url = https://github.com/Qinyu-Allen-Zhao/iPERCore.git
+[submodule "deep-high-resolution-net.pytorch"]
+	path = deep-high-resolution-net.pytorch
+	url = https://github.com/Qinyu-Allen-Zhao/deep-high-resolution-net.pytorch.git
+[submodule "SPIN"]
+	path = SPIN
+	url = https://github.com/Qinyu-Allen-Zhao/SPIN.git
