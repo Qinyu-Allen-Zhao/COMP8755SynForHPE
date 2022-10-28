@@ -7,3 +7,6 @@
 [submodule "SPIN"]
 	path = SPIN
 	url = https://github.com/Qinyu-Allen-Zhao/SPIN.git
+[submodule "surreal"]
+	path = surreal
+	url = https://github.com/Qinyu-Allen-Zhao/surreal.git
