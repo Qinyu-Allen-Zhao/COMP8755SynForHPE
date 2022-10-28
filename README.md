@@ -39,25 +39,23 @@ There are three zip files:
 
 ## 4. This repository
 
---Repo
-
-  | -- PoseGAN
+#### PoseGAN
 
 ​		A Generative Adversarial Network-based model to generate various poses. It is not used in the final project, but it's an interestring future direction.
 
 
 
-  | -- Pretrain
+#### Pretrain
 
 ​		A framework to pretrain a model in Pytorch.
 
 
 
-  | -- SPIN
+#### SPIN
 
 ​		A model used to extract pose and shape parameters from images, which was proposed by a previous paper [1].
 
-​		What I did on this repo:
+​		What I did:
 
 * Add more dataset classes to suport COCO 2017
 
@@ -65,7 +63,7 @@ There are three zip files:
 
   
 
-  | -- deep-high-resolution-net.pytorch
+#### deep-high-resolution-net.pytorch
 
 ​		An official pytorch implementation of [2] with a focus on learning reliable high-resolution representations.
 
@@ -77,15 +75,11 @@ There are three zip files:
 
 
 
-  | -- SUREEAL
+#### iPERCore
 
+​		A framework exploited to do motion imitation, which was proposed by [3]. 
 
-
-  | -- iPERCore
-
-​		A framework exploited to do motion imitation. 
-
-​		What I did
+​		What I did:
 
 * Modify it and set up a synthesis pipeline, which combines deep neural networks (DNNs) and a pretrained human body model and remarkably improves the appearance of synthetic humans. 
 * Collect datasets of subjects, poses, and backgrounds to boost variability in the synthetic dataset.
@@ -93,8 +87,22 @@ There are three zip files:
 
 
 
+#### surreal
+
+​		A previous work on synthesizing dataset for human pose estimation [4].
+
+​		What I did:
+
+* Change the background dataset to images without persons in COCO
+* Change the output and annotations to images with 2D keypoint annotations
+* Run it to synthesize images as baseline.
+
+
+
 [1] Kolotouros, Nikos, et al. "Learning to reconstruct 3D human pose and shape via model-fitting in the loop." *Proceedings of the IEEE/CVF International Conference on Computer Vision*. 2019.
 
 [2] Sun, Ke, et al. "Deep high-resolution representation learning for human pose estimation." *Proceedings of the IEEE/CVF conference on computer vision and pattern recognition*. 2019.
 
-[3] 
+[3] Liu, Wen, et al. "Liquid warping gan with attention: A unified framework for human image synthesis." *IEEE Transactions on Pattern Analysis and Machine Intelligence* (2021).
+
+[4] Varol, Gul, et al. "Learning from synthetic humans." *Proceedings of the IEEE conference on computer vision and pattern recognition*. 2017.

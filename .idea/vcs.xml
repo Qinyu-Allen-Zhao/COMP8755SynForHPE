@@ -5,5 +5,6 @@
     <mapping directory="$PROJECT_DIR$/SPIN" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deep-high-resolution-net.pytorch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/iPERCore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/surreal" vcs="Git" />
   </component>
 </project>
