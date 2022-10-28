@@ -1,13 +1,19 @@
 # COMP8755SynForHPE
 ## 1. Project introduction
 
-COMP8755 - Individual Computing Project
+COMP8755 - Individual Computing Project - The Australian National University
+
+*Title: **Synthetic Avatars for Real-World Human Pose Estimation***
 
 *UID: u7212335*
 
 *Name: Qinyu Zhao*
 
-*Title: Synthetic Avatars for Real-World Human Pose Estimation*
+*Supervisor: Dr. Liang Zheng*
+
+![Examples](/Users/qinyu.zhao/Desktop/ANU学业/COMP8755 Project/最终report和汇报/Report figures/examples2_syn.png)
+
+<center>Fig. 1. Examples of the synthetic images.</center>
 
 ## 2. Abstract
 
@@ -97,7 +103,7 @@ There are three zip files:
 * Change the output and annotations to images with 2D keypoint annotations
 * Run it to synthesize images as baseline.
 
-
+## References
 
 [1] Kolotouros, Nikos, et al. "Learning to reconstruct 3D human pose and shape via model-fitting in the loop." *Proceedings of the IEEE/CVF International Conference on Computer Vision*. 2019.
 
