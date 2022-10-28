@@ -1,5 +1,5 @@
 # COMP8755SynForHPE
-## 1. Project introduction
+## 1. Project Introduction
 
 COMP8755 - Individual Computing Project - The Australian National University
 
@@ -23,7 +23,7 @@ Increasing attention has been paid to synthesizing human images to improve HPE m
 
 To address this, this project proposes an improved framework.  First, a synthesis pipeline is set up, which combines deep neural networks (DNNs) and a pretrained human body model and remarkably improves the appearance of synthetic humans. Second, datasets are collected to provide various subjects, poses, and backgrounds. Last, 3D object models and synthetic humans without backgrounds are randomly transformed and inserted into the synthetic images to generate more occlusion, making samples more beneficial to training. Qualitative analysis and quantitative experiments are conducted to show the advantages of our dataset. 
 
-## 3. The synthetic dataset
+## 3. The Synthetic Dataset
 
 The project snythesize 50,000 images. You can download them via [Google Drive](https://drive.google.com/drive/folders/1zKpbP7w2_1KawqQMy6yIuDDrxTv5JigC?usp=sharing).
 
@@ -43,7 +43,7 @@ There are three zip files:
 
 ​		The synthetic dataset containing 50,000 images.
 
-## 4. This repository
+## 4. This Repository
 
 #### PoseGAN
 
