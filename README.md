@@ -11,7 +11,7 @@ COMP8755 - Individual Computing Project - The Australian National University
 
 *Supervisor: Dr. Liang Zheng*
 
-![Examples](/Users/qinyu.zhao/Desktop/ANU学业/COMP8755 Project/最终report和汇报/Report figures/examples2_syn.png)
+![Examples](./assets/examples_syn.png)
 
 <center>Fig. 1. Examples of the synthetic images.</center>
 
